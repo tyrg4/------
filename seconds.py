@@ -7,13 +7,15 @@ class Seconds(ProgressBar):
     def __init__(self, total, **kwargs):
         self.total = total
         self.End = False
-        super().__init__(max = self.total,value = self.total)
+        super().__init__(max = self.total,value = self.total,**kwargs)
     def restart(self, total, **kwargs):
-        pass
-
+        self.total = total
+        self.End = False
+        self.max = total
+        self.value = total
+        self.start()
     def start(self):
-        pass
-
+        Clock.schedule_interval(self.change,1)
     def change(self, dt):
         self.value -= 1
         if self.value <=0:
