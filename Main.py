@@ -13,6 +13,8 @@ class ScrButton(Button):
         self.window = window
         self.direction = direction
         self.target = target
+        btn_color = [.97,.66,.16,1]
+        self.background_color = btn_color
     def transfer(self,*args,**kwargs):
         self.window.manager.transition.direction = self.direction
         self.window.manager.current = self.target
