@@ -5,12 +5,12 @@ from kivy.properties import BooleanProperty
 from kivy.animation import Animation
 class Seconds(ProgressBar):
     End = BooleanProperty(False)
-    def __init__(self, total, **kwargs):
+    def __init__(self, total,runAnim, **kwargs):
         self.total = total
         self.End = False
-        self.anim = Animation(pos_hint={'center_x':.2},duration = 3)+Animation(pos_hint={'center_x':.4},duration = 3)
+        self.anim = Animation(size_hint=(.5,.2),duration = 3)+Animation(size_hint=(.5,.5),duration = 3)
         self.anim.repeat = True
-        
+        self.runAnim = runAnim
         super().__init__(max = self.total,value = self.total,**kwargs)
     def animation_start(self,*args):
         if self.value == 0:
@@ -22,8 +22,9 @@ class Seconds(ProgressBar):
         self.value = total
         self.start()
     def start(self):
-        self.anim.start(self)
-        self.anim.on_progress = self.animation_start
+        if self.runAnim == True:
+            self.anim.start(self)
+            self.anim.on_progress = self.animation_start
         Clock.schedule_interval(self.change,1)
     def change(self, dt):
         self.value -= 1

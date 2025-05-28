@@ -68,7 +68,7 @@ class second_screen(Screen):
         self.ti1 = TextInput(hint_text = 'Результат(если есть):',size_hint=(.5,.025),pos_hint={"x":.25,'center_y':.20})
         self.ti1.set_disabled(True)
         self.but1 = ScrButton(self,'up','third_screen',text = 'Продолжить',size_hint=(.3,.1),pos_hint={"x":.33}) 
-        self.timer = seconds.Seconds(15, size_hint=(.5,.05),pos_hint = {'x':.25,'center_y':.25})
+        self.timer = seconds.Seconds(15,False, size_hint=(.5,.05),pos_hint = {'x':.25,'center_y':.25})
         self.but1.on_press = self.CMERT
         self.is_activated = False
         self.timer.bind(End = self.blizko)
@@ -104,7 +104,7 @@ class second_screen(Screen):
         self.ti1.set_disabled(False)
         self.is_activated = True
 class third_screen(Screen):
-    timer = seconds.Seconds(45, size_hint=(.5,.05),pos_hint = {'x':.25,'center_y':.25})
+    timer = seconds.Seconds(45,True, size_hint=(.5,.05),pos_hint = {'x':.25,'center_y':.25})
     def __init__(self,name="third_screen"):
         super().__init__(name=name)
         layout1 = BoxLayout(orientation = 'vertical',spacing = 20)
@@ -126,8 +126,7 @@ class forth_screen(Screen):
         self.ti1 = TextInput(hint_text = 'Результат',size_hint=(.5,.025),pos_hint={"x":.25,'center_y':.20})
         self.ti2 = TextInput(hint_text = 'Результат после отдыха:',size_hint=(.5,.025),pos_hint={"x":.25,'center_y':.20})
         self.but1 = ScrButton(self,'up','five',text = 'Завершить',size_hint=(.3,.1),pos_hint={"x":.33})
-        self.timer1 = seconds.Seconds(15, size_hint=(.5,.05),pos_hint = {'x':.25,'center_y':.25})
-        self.timer2 = seconds.Seconds(30)
+        self.timer1 = seconds.Seconds(15,False, size_hint=(.5,.05),pos_hint = {'x':.25,'center_y':.25})
         self.ti1.set_disabled(True)
         self.ti2.set_disabled(True)
         self.timer1.bind(End = self.startTimer1)
@@ -139,15 +138,17 @@ class forth_screen(Screen):
         layout1.add_widget(self.but1)
         self.add_widget(layout1)
     def startTimer1(self,*args,**kwargs):
-        self.ti1.set_disabled(False)
-        self.state += 1
-        if self.state == 2:
-            self.timer1.restart(30)
+        if self.timer1.End:
             self.ti1.set_disabled(False)
-        elif self.state == 3:
-            self.timer1.restart(15)
-            self.ti2.set_disabled(False)
-            self.but1.set_disabled(False)
+            self.state += 1
+            if self.state == 2:
+                self.timer1.restart(30)
+                self.ti1.set_disabled(False)
+            elif self.state == 3:
+                self.timer1.restart(15)
+                self.ti2.set_disabled(False)
+            elif self.state == 4:
+                self.but1.set_disabled(False)
     def next(self):
         if self.state >= 3:
             global P2
